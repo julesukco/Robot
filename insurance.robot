@@ -11,29 +11,28 @@ ${BROWSER}    chromium
 ${HEADLESS}    false
 
 *** Test Cases ***
-104848515 Create Quote for Car
-    Open Insurance Application
-    Enter Vehicle Data for Automobile
-    Enter Insurant Data
-    Enter Product Data
+104848515 Shop iPhone
+    Open Home Page
+    Choose iPhone Shop Now
+    Choose iPhone Model
+    Add Phone to Cart
 
 *** Keywords ***
-Open Insurance Application
+Open Home Page
     New Browser    browser=${BROWSER}    headless=${HEADLESS}
-    New Context    locale=en-GB
-    New Page    http://sampleapp.tricentis.com/
+    New Context    locale=en-US
+    New Page    https://boostmobile.com
 
-Enter Vehicle Data for Automobile
-    Click    div.main-navigation >> "Automobile"
-    Select Options By    id=make    text    Audi
-    Fill Text    id=engineperformance    110
-    Fill Text    id=dateofmanufacture    06/12/1980
-    Select Options By    id=numberofseats    text    5
-    Select Options By    id=fuel    text    Petrol    
-    Fill Text    id=listprice    30000
-    Fill Text    id=licenseplatenumber    DMK1234
-    Fill Text    id=annualmileage   10000 
-    Click    section[style="display: block;"] >> text=Next »
+Choose iPhone Shop Now
+    Click    xpath=(//a[span[contains(text(), 'Shop Now')]])[2]
+
+Choose iPhone Model
+    Click    xpath=(//span[@class="cmp-button__text" and contains(text(), 'Select')])[2]
+Add Phone to Cart
+    Click    xpath=(//span[contains(text(), 'Decline Protection')])
+    Click    xpath=(//label[contains(text(), 'New Number')])
+    Click    xpath=(//span[contains(text(), 'Pay Today')])[2]
+    Click    xpath=(//button[contains(text(), 'Add to Cart')])
 
 Enter Insurant Data
     [Arguments]    ${firstname}=Max    ${lastname}=Mustermann
@@ -46,16 +45,10 @@ Enter Insurant Data
     Fill Text    id=zipcode    40123
     Fill Text    id=city    Essen
     Select Options By    id=occupation    text    Employee
+    Check Checkbox    *css=label >> id=EuroProtection
     Click    text=Cliff Diving
     Click    section[style="display: block;"] >> text=Next »
 
-Enter Product Data
-    Fill Text    id=startdate    06/01/2023
-    Select Options By    id=insurancesum    text    7.000.000,00
-    Select Options By    id=meritrating    text    Bonus 1
-    Select Options By    id=damageinsurance    text    No Coverage
-    Check Checkbox    *css=label >> id=EuroProtection
-    Select Options By    id=courtesycar    text    Yes
 
 # Check Specific Step Status
 #     # Check if entering vehicle data was successful
@@ -69,7 +62,8 @@ Enter Product Data
 #     # Optionally, use your custom library to record the test status
 
 End Test
-    Capture Test Case Status    ${TEST_NAME}    ${TEST_STATUS}    ${TEST_MESSAGE}
+    ${file_name} =    Set Variable    ${OUTPUT_DIR}${/}log.html
+    Capture Test Case Status    ${TEST_NAME}    ${TEST_STATUS}    ${TEST_MESSAGE}    ${file_name}
     Close Browser
     Close Context
 
