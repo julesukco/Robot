@@ -2,8 +2,7 @@
 Library    Browser
 Library    OperatingSystem
 Library    BuiltIn  # Import BuiltIn library for checking test status
-Library    CustomLibrary  # Assuming your custom library
-Library    TestStatusListener.py
+
 Test Teardown    End Test
 
 *** Variables ***
@@ -63,7 +62,7 @@ Enter Insurant Data
 
 End Test
     ${file_name} =    Set Variable    ${OUTPUT_DIR}${/}log.html
-    Capture Test Case Status    ${TEST_NAME}    ${TEST_STATUS}    ${TEST_MESSAGE}    ${file_name}
+#    Capture Test Case Status    ${TEST_NAME}    ${TEST_STATUS}    ${TEST_MESSAGE}    ${file_name}
     Close Browser
     Close Context
 
